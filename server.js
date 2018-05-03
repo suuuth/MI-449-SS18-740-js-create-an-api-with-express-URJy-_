@@ -30,10 +30,18 @@ app.post('/todo', function (request, response) {
   response.redirect('/todo/' + id)
 })
 app.delete('/todo/:id', function (request, response) {
+  if (!todo[request.params.id]) {
+    response.status(404).end('sorry, no such task: ' + request.params.id)
+    return
+  }
   delete todo[request.params.id]
   response.redirect('/todo')
 })
 app.put('/todo/:id', function (request, response) {
+  if (!todo[request.params.id]) {
+    response.status(404).end('sorry, no such task: ' + request.params.id)
+    return
+  }
   var product = todo[request.params.id]
   if (request.body.name !== undefined) {
     product.name = request.body.name.trim()
